@@ -1,23 +1,56 @@
 <template>
   <div>
-    <input />
-    <select name="searchBy" id="searchBy">
-      <option value="1">Title</option>
-      <option value="2">Body</option>
-      <option value="3">Author</option>
-    </select>
-    <button class="btn">Search</button>
+    <form action="">
+      <input
+        @change="onChange"
+        v-model="serarchText"
+        name="serarchText"
+        type="text"
+      />
+      <select
+        @change="onChange"
+        v-model="searchBy"
+        name="searchBy"
+        id="searchBy"
+      >
+        <option value="title">Title</option>
+        <option value="body">Body</option>
+        <option value="author">Author</option>
+      </select>
+      <button class="btn">Search</button>
+    </form>
+    <!-- <p>{{ serarchText }}</p>
+    <p>{{ searchBy }}</p> -->
   </div>
 </template>
 <script>
 export default {
   components: {},
   name: "SearchBar",
-  componenets: {},
+  data() {
+    return {
+      serarchText: "",
+      searchBy: "title",
+    };
+  },
+  methods: {
+    onChange() {
+      // if (this.serarchText) {
+      const search = {
+        text: this.serarchText,
+        by: this.searchBy,
+      };
+      console.log(search);
+      this.$store.dispatch("getSearch", search);
+      console.log("store", this.$store.state.search);
+
+      // }
+    },
+  },
 };
 </script>
 <style scoped>
-div {
+form {
   display: flex;
   justify-content: space-between;
   width: 100%;

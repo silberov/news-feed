@@ -43,17 +43,37 @@ export default createStore({
     ],
     isFormActive: false,
     editItemId: null,
+    search: {
+      text: "",
+      by: null,
+    },
   },
   getters: {
     allNews: (state) => state.news,
     newsItemEdit: (state) => state.news[state.editItemId - 1],
     newsWithoutItem: (state) => {
       if (state.editItemId) {
-        //console.log(state.editItemId);
         return state.news.filter((item) => item.id !== state.editItemId);
       } else return state.news;
     },
     isFormActive: (state) => state.isFormActive,
+    searchResults: (state) => {
+      if (state.search.text !== "") {
+        // console.log(
+        return state.news.filter((item) => {
+          // console.log(item[state.search.by].includes(state.search.text));
+          if (item[state.search.by].includes(state.search.text)) {
+            return item;
+          }
+
+          // if (item[state.search.by].includes(state.search.text)) {
+          //   //console.log(item);
+          //   return item;
+          //}
+        });
+        // );
+      } else return state.news;
+    },
   },
   mutations: {
     ADD_NEWS(state, newNews) {
@@ -76,6 +96,11 @@ export default createStore({
     GET_EDITED(state, id) {
       state.editItemId = id;
     },
+    GET_SEARCH(state, searchData) {
+      // console.log(searchData);
+      state.search.text = searchData.text;
+      state.search.by = searchData.by;
+    },
   },
   actions: {
     addNews({ commit }, newItem) {
@@ -93,6 +118,9 @@ export default createStore({
       commit("CLEAR_EDITED");
       commit("TOGGLE_FORM");
       commit("GET_EDITED", id);
+    },
+    getSearch({ commit }, searchData) {
+      commit("GET_SEARCH", searchData);
     },
   },
   modules: {},

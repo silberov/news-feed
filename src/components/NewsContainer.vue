@@ -21,7 +21,7 @@
 
     <SearchBar />
 
-    <div class="newsContainer" v-for="news in newsWithoutItem" :key="news.id">
+    <div class="newsContainer" v-for="news in searchResults" :key="news.id">
       <NewsItem
         :title="news.title"
         :body="news.body"
@@ -29,6 +29,15 @@
         :id="news.id"
       />
     </div>
+
+    <!-- <div class="newsContainer" v-for="news in newsWithoutItem" :key="news.id">
+      <NewsItem
+        :title="news.title"
+        :body="news.body"
+        :author="news.author"
+        :id="news.id"
+      />
+    </div> -->
   </div>
 </template>
 <script>
@@ -45,6 +54,7 @@ export default {
     "newsItemEdit",
     "newsWithoutItem",
     "isFormActive",
+    "searchResults",
   ]),
 
   components: {
