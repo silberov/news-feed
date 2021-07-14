@@ -59,19 +59,11 @@ export default createStore({
     isFormActive: (state) => state.isFormActive,
     searchResults: (state) => {
       if (state.search.text !== "") {
-        // console.log(
         return state.news.filter((item) => {
-          // console.log(item[state.search.by].includes(state.search.text));
           if (item[state.search.by].includes(state.search.text)) {
             return item;
           }
-
-          // if (item[state.search.by].includes(state.search.text)) {
-          //   //console.log(item);
-          //   return item;
-          //}
         });
-        // );
       } else return state.news;
     },
   },
@@ -109,6 +101,7 @@ export default createStore({
     },
     toggleForm({ commit }) {
       commit("TOGGLE_FORM");
+      commit("CLEAR_EDITED");
     },
     updateNews({ commit }, updatedNews) {
       commit("UPDATE_NEWS", updatedNews);

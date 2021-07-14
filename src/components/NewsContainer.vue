@@ -10,7 +10,7 @@
     </header>
 
     <Form
-      v-if="newsItemEdit"
+      v-if="newsItemEdit && isFormActive"
       :initTitle="newsItemEdit.title"
       :initBody="newsItemEdit.body"
       :initAuthor="newsItemEdit.author"
@@ -19,7 +19,7 @@
 
     <Form v-if="isFormActive && !newsItemEdit" />
 
-    <SearchBar />
+    <SearchBar v-if="!isFormActive" />
 
     <div class="newsContainer" v-for="news in searchResults" :key="news.id">
       <NewsItem
