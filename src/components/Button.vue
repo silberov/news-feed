@@ -1,5 +1,7 @@
 <template>
-  <button @click="onClick" :style="{ background: color }">{{ text }}</button>
+  <button class="btn" @click="onClick" :style="{ background: color }">
+    {{ text }}
+  </button>
 </template>
 <script>
 export default {
@@ -18,9 +20,8 @@ export default {
   },
 };
 </script>
-<style scoped>
-button {
-  /* background-color: {{color}}; */
+<style>
+.btn {
   padding: 10px 20px;
   font-family: Avenir, Helvetica, Arial, sans-serif;
   font-weight: 800;
@@ -28,7 +29,7 @@ button {
   color: #fff;
   border: none;
 }
-button:hover {
+.btn:hover {
   background-color: #ccc;
   cursor: pointer;
 }

@@ -91,6 +91,7 @@ export default createStore({
     },
     getEdit({ commit }, id) {
       commit("CLEAR_EDITED");
+      commit("TOGGLE_FORM");
       commit("GET_EDITED", id);
     },
   },

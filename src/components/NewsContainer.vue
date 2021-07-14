@@ -2,12 +2,13 @@
   <div class="warper">
     <header>
       <h2>News Feed</h2>
-      <!-- <Button
-        :text="this.$store.state.isFormActive ? '+Add' : 'Close'"
-        :color="this.$store.state.isFormActive ? '#1f7a8c' : '#a4161a'"
-      /> -->
-      <Button text="+ New" :color="true ? '#1f7a8c' : '#a4161a'" />
+
+      <Button
+        :text="isFormActive ? 'X' : '+ New'"
+        :color="!isFormActive ? '#1f7a8c' : '#a4161a'"
+      />
     </header>
+
     <Form
       v-if="newsItemEdit"
       :initTitle="newsItemEdit.title"
@@ -17,6 +18,8 @@
     />
 
     <Form v-if="isFormActive && !newsItemEdit" />
+
+    <SearchBar />
 
     <div class="newsContainer" v-for="news in newsWithoutItem" :key="news.id">
       <NewsItem
@@ -32,6 +35,7 @@
 import NewsItem from "./NewsItem";
 import Form from "./Form";
 import Button from "./Button.vue";
+import SearchBar from "./SearchBar.vue";
 import { mapGetters } from "vuex";
 
 export default {
@@ -47,6 +51,7 @@ export default {
     NewsItem,
     Button,
     Form,
+    SearchBar,
   },
 };
 </script>
