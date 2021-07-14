@@ -1,7 +1,9 @@
 <template>
   <div id="nav">
     <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+    <router-link to="/about">About</router-link> |
+    <router-link to="/nice">Nice</router-link> |
+    <router-link to="/best">Best</router-link>
   </div>
   <router-view />
 </template>
@@ -25,10 +27,24 @@
 
 #nav a {
   font-weight: bold;
-  color: #2c3e50;
+  color: #222222;
+  text-decoration: none;
+  padding: 10px;
 }
 
 #nav a.router-link-exact-active {
-  color: #42b983;
+  color: #1f7a8c;
+}
+.btn {
+  padding: 10px 20px;
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-weight: 800;
+  border-radius: 3px;
+  color: #fff;
+  border: none;
+}
+.btn:hover {
+  background-color: #ccc;
+  cursor: pointer;
 }
 </style>

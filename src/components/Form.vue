@@ -47,8 +47,10 @@ export default {
     initBody: { type: String, default: "" },
     initAuthor: { type: String, default: "" },
   },
+
   data() {
     return {
+      id: this.initId,
       title: this.initTitle,
       body: this.initBody,
       author: this.initAuthor,
@@ -66,14 +68,14 @@ export default {
         title: this.title,
         body: this.body,
         author: this.author,
-        id: this.$store.state.editItemId
-          ? this.$store.state.editItemId
-          : this.$store.state.news.length + 1,
+        id: this.id ? this.id : this.$store.state.news.length + 1,
       };
-      console.log(newItem);
-      if (!this.$store.state.editItemId) {
+
+      console.log("newItem", newItem);
+      if (!this.id) {
         this.$store.dispatch("addNews", newItem);
       } else this.$store.dispatch("updateNews", newItem);
+      this.$store.dispatch("toggleForm");
       this.title = "";
       this.body = "";
       this.author = "";

@@ -21,7 +21,9 @@
 
     <SearchBar v-if="!isFormActive" />
 
-    <div class="newsContainer" v-for="news in searchResults" :key="news.id">
+    <SortBy />
+
+    <div class="newsContainer" v-for="news in sorted" :key="news.id">
       <NewsItem
         :title="news.title"
         :body="news.body"
@@ -29,15 +31,6 @@
         :id="news.id"
       />
     </div>
-
-    <!-- <div class="newsContainer" v-for="news in newsWithoutItem" :key="news.id">
-      <NewsItem
-        :title="news.title"
-        :body="news.body"
-        :author="news.author"
-        :id="news.id"
-      />
-    </div> -->
   </div>
 </template>
 <script>
@@ -45,6 +38,7 @@ import NewsItem from "./NewsItem";
 import Form from "./Form";
 import Button from "./Button.vue";
 import SearchBar from "./SearchBar.vue";
+import SortBy from "./SortBy.vue";
 import { mapGetters } from "vuex";
 
 export default {
@@ -55,6 +49,7 @@ export default {
     "newsWithoutItem",
     "isFormActive",
     "searchResults",
+    "sorted",
   ]),
 
   components: {
@@ -62,6 +57,7 @@ export default {
     Button,
     Form,
     SearchBar,
+    SortBy,
   },
 };
 </script>

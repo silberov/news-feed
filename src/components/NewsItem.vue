@@ -19,7 +19,7 @@ export default {
   },
   methods: {
     onEdit() {
-      console.log(this.id, this.$store.state.editItemId);
+      //console.log(this.id, this.$store.state.editItemId);
       this.$store.dispatch("getEdit", this.id);
       console.log(this.id, this.$store.state.editItemId);
     },

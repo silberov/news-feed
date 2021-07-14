@@ -47,24 +47,55 @@ export default createStore({
       text: "",
       by: null,
     },
+    sortBy: "title",
+    sortDesc: false,
   },
   getters: {
+    isFormActive: (state) => state.isFormActive,
+
     allNews: (state) => state.news,
-    newsItemEdit: (state) => state.news[state.editItemId - 1],
+
+    newsItemEdit: (state) =>
+      state.news.find((item) => item.id === state.editItemId),
+
     newsWithoutItem: (state) => {
-      if (state.editItemId) {
+      if (state.editItemId !== null) {
         return state.news.filter((item) => item.id !== state.editItemId);
       } else return state.news;
     },
-    isFormActive: (state) => state.isFormActive,
-    searchResults: (state) => {
+
+    searchResults: (state, getters) => {
       if (state.search.text !== "") {
-        return state.news.filter((item) => {
+        return getters.newsWithoutItem.filter((item) => {
           if (item[state.search.by].includes(state.search.text)) {
             return item;
           }
         });
       } else return state.news;
+    },
+    sorted: (state, getters) => {
+      function compareValues(key, order = "asc") {
+        return function innerSort(a, b) {
+          const varA =
+            typeof a[key] === "string" ? a[key].toUpperCase() : a[key];
+          const varB =
+            typeof b[key] === "string" ? b[key].toUpperCase() : b[key];
+
+          let comparison = 0;
+          if (varA > varB) {
+            comparison = 1;
+          } else if (varA < varB) {
+            comparison = -1;
+          }
+          return order === "desc" ? comparison * -1 : comparison;
+        };
+      }
+      return getters.searchResults.sort(
+        compareValues(state.sortBy, state.sortDesc ? "desc" : "asc")
+      );
+    },
+    isDescChecked: (state) => {
+      state.sortDesc;
     },
   },
   mutations: {
@@ -75,27 +106,45 @@ export default createStore({
       state.isFormActive = !state.isFormActive;
     },
     UPDATE_NEWS(state, updatedItem) {
-      console.log(state.editItemId);
-      const index = state.editItemId - 1;
-      console.log(state.editItemId);
-      state.news[index].author = updatedItem.author;
-      state.news[index].title = updatedItem.title;
-      state.news[index].body = updatedItem.body;
+      const index = state.editItemId;
+      console.log("index", index, "state", state.editItemId);
+
+      // state.news.find((item) => item.id === state.editItemId).author =
+      //   updatedItem.author;
+      // state.news.find((item) => item.id === state.editItemId).title =
+      //   updatedItem.title;
+      // state.news.find((item) => item.id === state.editItemId).body =
+      //   updatedItem.body;
+      for (let i = 0; i < state.news.length; i++) {
+        if (state.news[i].id === updatedItem.id) {
+          state.news[i].author = updatedItem.author;
+          state.news[i].title = updatedItem.title;
+          state.news[i].body = updatedItem.body;
+          return;
+        }
+      }
     },
     CLEAR_EDITED(state) {
       state.editItemId = null;
     },
     GET_EDITED(state, id) {
+      console.log("get id", id);
       state.editItemId = id;
     },
     GET_SEARCH(state, searchData) {
-      // console.log(searchData);
       state.search.text = searchData.text;
       state.search.by = searchData.by;
+    },
+    CHANGE_SORT_BY(state, by) {
+      state.sortBy = by;
+    },
+    TOGGLE_DESC(state) {
+      state.sortDesc = !state.sortDesc;
     },
   },
   actions: {
     addNews({ commit }, newItem) {
+      console.log("new", newItem);
       commit("ADD_NEWS", newItem);
       commit("CLEAR_EDITED");
     },
@@ -107,13 +156,22 @@ export default createStore({
       commit("UPDATE_NEWS", updatedNews);
       commit("CLEAR_EDITED");
     },
-    getEdit({ commit }, id) {
+    getEdit({ commit, state }, id) {
       commit("CLEAR_EDITED");
-      commit("TOGGLE_FORM");
       commit("GET_EDITED", id);
+      if (state.isFormActive) {
+        commit("TOGGLE_FORM");
+      }
+      commit("TOGGLE_FORM");
     },
     getSearch({ commit }, searchData) {
       commit("GET_SEARCH", searchData);
+    },
+    ChangeSortBy({ commit }, by) {
+      commit("CHANGE_SORT_BY", by);
+    },
+    toggleOrder({ commit }) {
+      commit("TOGGLE_DESC");
     },
   },
   modules: {},
